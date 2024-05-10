@@ -10,7 +10,7 @@ part of 'user.dart';
 
 extension UserBinary on User {
   Uint8List toBuffer() {
-    final writer = BinaryWriter(3947);
+    final writer = BinaryWriter(3963);
     writer.writeString(id);
     writer.writeInt(age);
     writer.writeByte(enabled ? 1 : 0);
@@ -48,6 +48,8 @@ extension UserBinary on User {
         value == null ? writer.writeNull() : writer.writeDouble(value);
       }
     }
+    writer.writeInt(createdAt.millisecondsSinceEpoch);
+    writer.writeInt(ttl.inMilliseconds);
     return writer.takeBytes();
   }
 }
@@ -75,6 +77,8 @@ User _UserFromBuffer(Uint8List buffer) {
             reader.readInt(),
             (_) => MapEntry(reader.readString(),
                 reader.isNextNull() ? null : reader.readDouble()))),
+    createdAt: DateTime.fromMillisecondsSinceEpoch(reader.readInt()),
+    ttl: Duration(milliseconds: reader.readInt()),
   );
 }
 

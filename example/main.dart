@@ -28,6 +28,8 @@ void main() {
         longitude: 124.545,
       ),
     ),
+    createdAt: DateTime(2024, 10, 4, 8, 7),
+    ttl: Duration(seconds: 7),
   );
 
   final buffer = user.toBuffer();

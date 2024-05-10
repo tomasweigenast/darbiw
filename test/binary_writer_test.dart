@@ -12,9 +12,13 @@ void main() {
 
     test("without chunking", () {
       final writer = BinaryWriter();
-      writer.writeUint8List(Uint8List.fromList(<int>[12, 54, 32, 12, 77, 98, 211, 1]));
+      writer.writeUint8List(
+          Uint8List.fromList(<int>[12, 54, 32, 12, 77, 98, 211, 1]));
 
-      expect(writer.takeBytes(), equals(Uint8List(8)..setRange(0, 8, <int>[12, 54, 32, 12, 77, 98, 211, 1])));
+      expect(
+          writer.takeBytes(),
+          equals(Uint8List(8)
+            ..setRange(0, 8, <int>[12, 54, 32, 12, 77, 98, 211, 1])));
     });
 
     test("chunking", () {
@@ -23,14 +27,17 @@ void main() {
       writer.writeByte(5);
       writer.writeByte(8);
       writer.writeByte(241);
-      expect(writer.takeBytes(), equals(Uint8List.fromList(<int>[12, 54, 32, 12, 5, 8, 241])));
+      expect(writer.takeBytes(),
+          equals(Uint8List.fromList(<int>[12, 54, 32, 12, 5, 8, 241])));
     });
 
     test("chunking without filling up chunk", () {
       final writer = BinaryWriter(5);
       writer.writeUint8List(Uint8List.fromList(<int>[12, 54]));
-      writer.writeUint8List(Uint8List.fromList(<int>[12, 54, 65, 87, 12, 2, 3]));
-      expect(writer.takeBytes(), equals(Uint8List.fromList(<int>[12, 54, 12, 54, 65, 87, 12, 2, 3])));
+      writer
+          .writeUint8List(Uint8List.fromList(<int>[12, 54, 65, 87, 12, 2, 3]));
+      expect(writer.takeBytes(),
+          equals(Uint8List.fromList(<int>[12, 54, 12, 54, 65, 87, 12, 2, 3])));
     });
   });
 }

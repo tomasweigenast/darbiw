@@ -73,7 +73,10 @@ final class BinaryWriter {
   /// Builds the final buffer
   Uint8List takeBytes() {
     if (_length == 0) return _emptyList;
-    if (_chunks.isEmpty) return Uint8List.view(_currentChunk.buffer, _currentChunk.offsetInBytes, _length);
+    if (_chunks.isEmpty) {
+      return Uint8List.view(
+          _currentChunk.buffer, _currentChunk.offsetInBytes, _length);
+    }
 
     final buffer = Uint8List(_length);
     int offset = 0;

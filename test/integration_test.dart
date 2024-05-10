@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:darbiw/binary.dart';
+import 'package:darbiw/darbiw.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -26,7 +26,8 @@ void main() {
       final reader = BinaryReader(buffer.takeBytes());
       expect(reader.readDouble(), equals(25.6542));
       expect(reader.readString(), equals("hello world"));
-      expect(reader.readUint8List(), equals(Uint8List.fromList(<int>[25, 65, 42, 12, 122, 11])));
+      expect(reader.readUint8List(),
+          equals(Uint8List.fromList(<int>[25, 65, 42, 12, 122, 11])));
       expect(reader.isNextNull(), isTrue);
       expect(reader.readInt(), 25);
     });

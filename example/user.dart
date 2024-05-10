@@ -2,8 +2,7 @@ import 'dart:typed_data';
 
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
-import 'package:darbiw/annotations.dart';
-import 'package:darbiw/binary.dart';
+import 'package:darbiw/darbiw.dart';
 
 part 'user.g.dart';
 
@@ -18,6 +17,8 @@ final class User {
   final List<int?>? arguments;
   final Address? address;
   final Map<String, double?>? amounts;
+  final DateTime createdAt;
+  final Duration ttl;
 
   User({
     required this.id,
@@ -29,12 +30,15 @@ final class User {
     required this.address,
     required this.arguments,
     required this.amounts,
+    required this.createdAt,
+    required this.ttl,
   });
 
   factory User.fromBuffer(Uint8List buffer) => _UserFromBuffer(buffer);
 
   @override
-  int get hashCode => Object.hash(id, age, enabled, accountType, flags, follows, arguments, address, amounts);
+  int get hashCode => Object.hash(id, age, enabled, accountType, flags, follows,
+      arguments, address, amounts, createdAt, ttl);
 
   @override
   bool operator ==(Object other) =>
@@ -48,7 +52,9 @@ final class User {
           const MapEquality().equals(other.follows, follows) &&
           const ListEquality().equals(other.arguments, arguments) &&
           other.address == address &&
-          const MapEquality().equals(other.amounts, amounts));
+          const MapEquality().equals(other.amounts, amounts) &&
+          other.ttl == ttl &&
+          other.createdAt == createdAt);
 }
 
 enum AccountType { unknown, customer, admin }
@@ -67,7 +73,8 @@ final class Address {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is Address && other.name == name && other.location == location);
+      identical(this, other) ||
+      (other is Address && other.name == name && other.location == location);
 }
 
 @binary
@@ -76,12 +83,16 @@ final class Coordinates {
 
   Coordinates({required this.latitude, required this.longitude});
 
-  factory Coordinates.fromBuffer(Uint8List buffer) => _CoordinatesFromBuffer(buffer);
+  factory Coordinates.fromBuffer(Uint8List buffer) =>
+      _CoordinatesFromBuffer(buffer);
 
   @override
   int get hashCode => Object.hash(latitude, longitude);
 
   @override
   bool operator ==(Object other) =>
-      identical(other, this) || (other is Coordinates && other.latitude == latitude && other.longitude == longitude);
+      identical(other, this) ||
+      (other is Coordinates &&
+          other.latitude == latitude &&
+          other.longitude == longitude);
 }
