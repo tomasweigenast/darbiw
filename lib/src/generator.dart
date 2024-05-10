@@ -85,18 +85,18 @@ final class BinaryGenerator extends GeneratorForAnnotation<Binary> {
 (String writer, int bufferSize) _getWriter(String paramName, DartType type,
     [bool isNullable = false]) {
   if (type.isDartCoreBool) {
-    return ("writer.writeByte($paramName ? 1 : 0);", 1);
+    return ("writer.writeByte($paramName${isNullable ? '!' : ''} ? 1 : 0);", 1);
   } else if (type.isDartCoreDouble) {
-    return ("writer.writeDouble($paramName);", 8);
+    return ("writer.writeDouble($paramName${isNullable ? '!' : ''});", 8);
   } else if (type.isDartCoreInt) {
-    return ("writer.writeInt($paramName);", 8);
+    return ("writer.writeInt($paramName${isNullable ? '!' : ''});", 8);
   } else if (type.isDartCoreNum) {
     return (
-      "$paramName is int ? writer.writeInt($paramName) : writer.writeDouble($paramName);",
+      "$paramName is int ? writer.writeInt($paramName${isNullable ? '!' : ''}) : writer.writeDouble($paramName${isNullable ? '!' : ''});",
       8
     );
   } else if (type.isDartCoreString) {
-    return ("writer.writeString($paramName);", 300);
+    return ("writer.writeString($paramName${isNullable ? '!' : ''});", 300);
   } else if (type.isDartCoreList || type.isDartCoreSet) {
     // get base type
     final baseType = (type as ParameterizedType).typeArguments.first;
@@ -151,9 +151,15 @@ for(final MapEntry(:key, :value) in $paramName${isNullable ? '!' : ''}.entries) 
       return ("writer.writeByte($paramName${isNullable ? '!' : ''}.index);", 1);
     } else if (type.element is ClassElement) {
       if (_datetimeChecker.isAssignableFrom(type.element)) {
-        return ("writer.writeInt($paramName.millisecondsSinceEpoch);", 8);
+        return (
+          "writer.writeInt($paramName${isNullable ? '!' : ''}.millisecondsSinceEpoch);",
+          8
+        );
       } else if (_durationChecker.isAssignableFrom(type.element)) {
-        return ("writer.writeInt($paramName.inMilliseconds);", 8);
+        return (
+          "writer.writeInt($paramName${isNullable ? '!' : ''}.inMilliseconds);",
+          8
+        );
       }
       return (
         "writer.writeUint8List($paramName${isNullable ? '!' : ''}.toBuffer());",

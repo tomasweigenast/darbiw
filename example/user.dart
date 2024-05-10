@@ -12,6 +12,7 @@ final class User {
   final int age;
   final bool enabled;
   final AccountType accountType;
+  final String? name;
   final List<int> flags;
   final Map<String, bool> follows;
   final List<int?>? arguments;
@@ -23,6 +24,7 @@ final class User {
   User({
     required this.id,
     required this.age,
+    required this.name,
     required this.enabled,
     required this.accountType,
     required this.flags,
@@ -38,7 +40,7 @@ final class User {
 
   @override
   int get hashCode => Object.hash(id, age, enabled, accountType, flags, follows,
-      arguments, address, amounts, createdAt, ttl);
+      arguments, address, amounts, createdAt, ttl, name);
 
   @override
   bool operator ==(Object other) =>
@@ -54,7 +56,8 @@ final class User {
           other.address == address &&
           const MapEquality().equals(other.amounts, amounts) &&
           other.ttl == ttl &&
-          other.createdAt == createdAt);
+          other.createdAt == createdAt &&
+          other.name == name);
 }
 
 enum AccountType { unknown, customer, admin }

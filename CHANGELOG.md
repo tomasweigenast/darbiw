@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Fix nullability suffix when type is a primitive
+
 ## 1.0.1
 
 - Single export for all classes

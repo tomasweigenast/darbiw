@@ -3,6 +3,7 @@ import 'user.dart';
 void main() {
   final user = User(
     id: "12345",
+    name: null,
     accountType: AccountType.customer,
     age: 15,
     enabled: true,

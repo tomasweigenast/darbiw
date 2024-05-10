@@ -10,9 +10,14 @@ part of 'user.dart';
 
 extension UserBinary on User {
   Uint8List toBuffer() {
-    final writer = BinaryWriter(3963);
+    final writer = BinaryWriter(4263);
     writer.writeString(id);
     writer.writeInt(age);
+    if (name == null) {
+      writer.writeNull();
+    } else {
+      writer.writeString(name!);
+    }
     writer.writeByte(enabled ? 1 : 0);
     writer.writeByte(accountType.index);
     writer.writeInt(flags.length);
@@ -60,6 +65,7 @@ User _UserFromBuffer(Uint8List buffer) {
   return User(
     id: reader.readString(),
     age: reader.readInt(),
+    name: reader.isNextNull() ? null : reader.readString(),
     enabled: reader.readBool(),
     accountType: AccountType.values[reader.readByte()],
     flags: List.generate(reader.readInt(), (_) => reader.readInt()),
